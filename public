@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "ad": "Şınav",
+    "kasGrubu": "göğüs",
+    "aciklama": "Göğüs kaslarını güçlendiren temel vücut ağırlığı egzersizi.",
+    "setTekrarDinlenme": "3 set, 12 tekrar, 60 saniye dinlenme",
+    "ytLink": "https://www.youtube.com/watch?v=IODxDxX7oi4"
+  },
+  {
+    "id": 2,
+    "ad": "Mekik",
+    "kasGrubu": "core",
+    "aciklama": "Karın kaslarını çalıştıran klasik egzersiz.",
+    "setTekrarDinlenme": "3 set, 15 tekrar, 45 saniye dinlenme",
+    "ytLink": "https://www.youtube.com/watch?v=Xyd_fa5zoEU"
+  }
+]
