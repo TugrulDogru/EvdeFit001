@@ -1,22 +1,47 @@
+import React, { useState, useEffect } from 'react';
 
-document.getElementById('exerciseSearch').addEventListener('input', function(e) {
-    const query = e.target.value.toLowerCase();
-    const resultsDiv = document.getElementById('searchResults');
-    resultsDiv.innerHTML = '';
+function App() {
+  const [exercises, setExercises] = useState([]);
+  const [search, setSearch] = useState('');
 
-    const exampleExercises = [
-        { name: "Şınav", area: "göğüs, triceps", difficulty: "orta" },
-        { name: "Plank", area: "core", difficulty: "orta" },
-        { name: "Mountain Climbers", area: "cardio, core", difficulty: "orta" },
-        { name: "Barfiks", area: "sırt, biceps", difficulty: "zor" },
-        { name: "Squat", area: "bacak, kalça", difficulty: "kolay" }
-    ];
+  useEffect(() => {
+    fetch('/exercises.json')
+      .then(res => res.json())
+      .then(data => setExercises(data))
+      .catch(e => console.error('JSON okunamadı', e));
+  }, []);
 
-    const filtered = exampleExercises.filter(ex => ex.name.toLowerCase().includes(query) || ex.area.includes(query));
+  const filtered = exercises.filter(e =>
+    e.kasGrubu.toLowerCase().includes(search.toLowerCase())
+  );
 
-    filtered.forEach(ex => {
-        const div = document.createElement('div');
-        div.innerHTML = `<strong>${ex.name}</strong> - Kas Grubu: ${ex.area} - Zorluk: ${ex.difficulty}`;
-        resultsDiv.appendChild(div);
-    });
-});
+  return (
+    <div style={{padding: '20px'}}>
+      <h1>EvdeFit Egzersizler</h1>
+      <input
+        placeholder="Kas grubu ara (örnek: göğüs)"
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        style={{padding: '10px', fontSize: '16px', width: '300px'}}
+      />
+      <ul>
+        {filtered.map(e => (
+          <li key={e.id} style={{marginBottom: '20px'}}>
+            <h3>{e.ad}</h3>
+            <p>{e.aciklama}</p>
+            <p><b>Set/tekrar/dinlenme:</b> {e.setTekrarDinlenme}</p>
+            {e.ytLink && (
+              <p>
+                <a href={e.ytLink} target="_blank" rel="noreferrer">
+                  YouTube Videosu
+                </a>
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
