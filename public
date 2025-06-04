@@ -1,18 +1,36 @@
-[
-  {
-    "id": 1,
-    "ad": "Şınav",
-    "kasGrubu": "göğüs",
-    "aciklama": "Göğüs kaslarını güçlendiren temel vücut ağırlığı egzersizi.",
-    "setTekrarDinlenme": "3 set, 12 tekrar, 60 saniye dinlenme",
-    "ytLink": "https://www.youtube.com/watch?v=IODxDxX7oi4"
-  },
-  {
-    "id": 2,
-    "ad": "Mekik",
-    "kasGrubu": "core",
-    "aciklama": "Karın kaslarını çalıştıran klasik egzersiz.",
-    "setTekrarDinlenme": "3 set, 15 tekrar, 45 saniye dinlenme",
-    "ytLink": "https://www.youtube.com/watch?v=Xyd_fa5zoEU"
-  }
-]
+import React, { useEffect, useState } from 'react';
+
+function App() {
+  const [exercises, setExercises] = useState([]);
+
+  useEffect(() => {
+    fetch('/exercises.json')
+      .then(res => res.json())
+      .then(data => setExercises(data))
+      .catch(err => console.error('Egzersiz yüklenemedi:', err));
+  }, []);
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+      <h1>Egzersiz Listesi</h1>
+      {exercises.length === 0 ? (
+        <p>Yükleniyor...</p>
+      ) : (
+        exercises.map(ex => (
+          <div key={ex.id} style={{border: '1px solid #ccc', marginBottom: 10, padding: 10, borderRadius: 5}}>
+            <h2>{ex.name} ({ex.muscleGroup})</h2>
+            <p>{ex.description}</p>
+            <p><b>Set - Tekrar - Dinlenme:</b> {ex.sets} set, {ex.reps} tekrar, {ex.rest} dinlenme</p>
+            {ex.youtube && (
+              <p>
+                <a href={ex.youtube} target="_blank" rel="noopener noreferrer">YouTube Videosu</a>
+              </p>
+            )}
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
+
+export default App;
